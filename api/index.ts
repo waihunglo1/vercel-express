@@ -16,14 +16,11 @@ var dataScanRouter = require('./routes/scan');
 var portfolioRouter = require('./routes/portfolio');
 var mmRouter = require('./routes/mm');
 
-const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200,
-};
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
@@ -130,7 +127,7 @@ app.use('/api/v1/stockcharts', stockchartsProxy);
 // Yahoo finance route
 app.use('/api/v1/yahoo', yahooRouter);
 
-// CORS middleware
+// rountes for data scan, portfolio, and mm
 app.use('/api/v1/dscan', dataScanRouter);
 app.use('/api/v1/portfolios', portfolioRouter);
 app.use('/api/v1/mm', mmRouter);
