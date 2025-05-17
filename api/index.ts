@@ -6,27 +6,23 @@ const { sql } = require('@vercel/postgres');
 
 const bodyParser = require('body-parser');
 const path = require('path');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const cors = require('cors');
+
+// Importing routes
 const healthCheckRouter = require('./routes/healthcheck');
+const stockchartsProxy = require('./routes/proxyStockCharts');
+var yahooRouter = require('./routes/yahoo');
+var dataScanRouter = require('./routes/scan');
+var portfolioRouter = require('./routes/portfolio');
+var mmRouter = require('./routes/mm');
+
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200,
+};
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-/**
- * Proxy endpoints for /stockcharts routing
- */
-const options = {
-  target: "https://stockcharts.com/",
-  changeOrigin: true,
-  pathRewrite: {
-      [`^/stockcharts`]: '',
-  },
-  onProxyRes: function (proxyRes, req, res) {
-    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-  }
-};
-
-const stockchartsProxy = createProxyMiddleware(options);
 
 app.use(express.static('public'));
 
@@ -129,7 +125,15 @@ app.get('/allUsers', async (req, res) => {
 app.use('/api/v1/hc', healthCheckRouter);
 
 // Proxy route for /stockcharts
-app.use('/stockcharts', stockchartsProxy);
+app.use('/api/v1/stockcharts', stockchartsProxy);
+
+// Yahoo finance route
+app.use('/api/v1/yahoo', yahooRouter);
+
+// CORS middleware
+app.use('/api/v1/dscan', dataScanRouter);
+app.use('/api/v1/portfolios', portfolioRouter);
+app.use('/api/v1/mm', mmRouter);
 
 app.listen(3000, () => console.log('Server ready on port 3000.'));
 

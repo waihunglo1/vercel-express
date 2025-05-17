@@ -1,7 +1,22 @@
 <html>
-	<body>
-    <div>
-      <h1>About</h1>
-      <p>This is a simple web app demonstrating how to use Express.js with Vercel. This app shows how to create different routes, upload data to a databse, and fetch data from a database.</p>
-  </body>
+
+<body>
+  <div>
+    <h1>Health check</h1>
+    <a href="/api/v1/hc">Health check</a><br>
+    <a href="/api/v1/dscan/sctr?view=L">List all large caps</a><br>
+
+    <a href="/api/v1/yahoo/taIndicator?cgo=^IXIC,^GSPC,^DJI|S50DF&p=1&format=json&order=d">yahoo index-scan</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=0001.HK,0002.HK,0003.HK|B14">yahoo hk-scan</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|B14&p=1&format=json&order=d">yahoo ROC</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|M12&p=1&format=json&order=d">yahoo RIS</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|S50DF&p=1&format=json&order=d">yahoo SMA50 Diff</a><br>
+
+    <a href="/api/v1/yahoo/summary?cgo=^IXIC,AAPL,CRM,CTA,MSFT,CPNG,TECK">YF-SUMMARY</a><br>
+    <a href="/api/v1/portfolios">Portfolio listing</a><br>
+
+    <a href="/api/v1/dscan?cgo=$NAA20R,$NAA50R,$NAA150R,$NAA200R">SC Market Breadth</a><br>
+    <a href="/api/v1/stockcharts/def/servlet/SC.uscan?cgo=SPY,MSFT,CPNG,TECK|B14&p=1&format=json&order=d">Stock charts proxy</a><br>
+</body>
+
 </html>
