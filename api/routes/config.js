@@ -1,12 +1,15 @@
 const yaml = require('js-yaml');
 const fs   = require('fs');
+const path = require('path');
 
 var doc = new Object();
 
 // Get document, or throw exception on error
 try {
-  doc = yaml.load(fs.readFileSync('./config.yml', 'utf8'));
-  // console.log(doc);  
+  var ymlPath = path.join(__dirname, '..', '..', 'config', 'setup.yml')
+  console.log(ymlPath);
+  doc = yaml.load(fs.readFileSync(ymlPath, 'utf8'));
+  
 } catch (e) {
   console.log(e);
 }
