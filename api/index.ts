@@ -6,11 +6,27 @@ const { sql } = require('@vercel/postgres');
 
 const bodyParser = require('body-parser');
 const path = require('path');
-
-var healthCheckRouter = require('./routes/healthcheck');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const healthCheckRouter = require('./routes/healthcheck');
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+/**
+ * Proxy endpoints for /stockcharts routing
+ */
+const options = {
+  target: "https://stockcharts.com/",
+  changeOrigin: true,
+  pathRewrite: {
+      [`^/stockcharts`]: '',
+  },
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+  }
+};
+
+const stockchartsProxy = createProxyMiddleware(options);
 
 app.use(express.static('public'));
 
@@ -111,6 +127,9 @@ app.get('/allUsers', async (req, res) => {
 
 // Health check route
 app.use('/api/v1/hc', healthCheckRouter);
+
+// Proxy route for /stockcharts
+app.use('/stockcharts', stockchartsProxy);
 
 app.listen(3000, () => console.log('Server ready on port 3000.'));
 
