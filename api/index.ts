@@ -11,9 +11,8 @@ const cors = require('cors');
 // Importing routes
 const healthCheckRouter = require('./routes/healthcheck');
 const stockchartsProxy = require('./routes/proxyStockCharts');
-var yahooRouter = require('./routes/yahoo');
-var dataScanRouter = require('./routes/scan');
-var mmRouter = require('./routes/mm');
+const yahooRouter = require('./routes/yahoo');
+const dataScanRouter = require('./routes/scan');
 
 
 // Create application/x-www-form-urlencoded parser
@@ -126,9 +125,8 @@ app.use('/api/v1/stockcharts', stockchartsProxy);
 // Yahoo finance route
 app.use('/api/v1/yahoo', yahooRouter);
 
-// rountes for data scan, portfolio, and mm
+// routes for data scan, portfolio, and mm
 app.use('/api/v1/dscan', dataScanRouter);
-app.use('/api/v1/mm', mmRouter);
 
 app.listen(3000, () => console.log('Server ready on port 3000.'));
 

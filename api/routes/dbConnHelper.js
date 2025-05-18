@@ -1,9 +1,11 @@
-const fs = require('fs');
-const pg = require('pg');
-const url = require('url');
+require('dotenv').config();
 const pgClient = require('postgrejs');
 
+const { neon } = require('@neondatabase/serverless');
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 const { AVIEN_DB_USER, AVIEN_DB_PASSWORD, AVIEN_DB_HOST, AVIEN_DB_PORT, AVIEN_DB_DATABASE } = process.env;
+
+const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
 
 const config = {
     user: AVIEN_DB_USER,
@@ -43,7 +45,7 @@ sFSecPmZ5WUwaDqMHemEjLMCrFhLzwO3nMBqHTDl37IX2Bbuiw==
 
 const connection = new pgClient.Connection(config);
 
-async function getPgVersion() {
+async function getAivenPgVersion() {
 
     // Connect to database server
     await connection.connect();
@@ -59,6 +61,14 @@ async function getPgVersion() {
     return result.rows[0];
 }
 
+async function getNeonPgVersion() {
+  const result = await sql`SELECT version()`;
+  var version = result[0];
+
+  return version;
+}
+
 module.exports = {
-    getPgVersion
+    getAivenPgVersion,
+    getNeonPgVersion
 };
