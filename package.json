@@ -24,6 +24,8 @@
     "isin-validator": "^1.1.1",
     "js-yaml": "^4.1.0",
     "moment": "^2.30.1",
+    "pg": "^8.16.0",
+    "postgrejs": "^2.22.4",
     "xlsx": "^0.18.5",
     "yahoo-finance2": "^2.13.3"
   },
