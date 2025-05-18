@@ -13,7 +13,6 @@ const healthCheckRouter = require('./routes/healthcheck');
 const stockchartsProxy = require('./routes/proxyStockCharts');
 var yahooRouter = require('./routes/yahoo');
 var dataScanRouter = require('./routes/scan');
-var portfolioRouter = require('./routes/portfolio');
 var mmRouter = require('./routes/mm');
 
 
@@ -129,7 +128,6 @@ app.use('/api/v1/yahoo', yahooRouter);
 
 // rountes for data scan, portfolio, and mm
 app.use('/api/v1/dscan', dataScanRouter);
-app.use('/api/v1/portfolios', portfolioRouter);
 app.use('/api/v1/mm', mmRouter);
 
 app.listen(3000, () => console.log('Server ready on port 3000.'));
