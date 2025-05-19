@@ -106,9 +106,7 @@ const reformatData = (data) => {
         })
         .map(item => {
             return {
-                code: reformatSymbolinHK(item[0]),
-                name: item[1],
-                type: item[2]
+                code: reformatSymbolinHK(item[0])
             };
         });
 }
