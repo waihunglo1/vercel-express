@@ -2,6 +2,7 @@ var express = require('express');
 const helper = require('./helper.js');
 const config = require('./config.js');
 const stockcharts = require('./stockcharts-utils.js')
+const dbHelper = require('./dbConnHelper.js');
 var router = express.Router();
 
 
@@ -26,10 +27,23 @@ router.get('/', function (req, res, next) {
 /**
  * sctr function
  */
-router.get('/sctr', function (req, res, next) {
+router.get('/sctr/us', function (req, res, next) {
   const view = req.query.view;
   if (!helper.isEmpty(view)) {
     stockcharts.simpleSctr(view)
+      .then(function (row) {
+        res.json(row);
+      });
+  }   
+});
+
+/**
+ * sctr function
+ */
+router.get('/sctr/hk', function (req, res, next) {
+  const view = req.query.view;
+  if (!helper.isEmpty(view)) {
+    dbHelper.queryDailyStockStats()
       .then(function (row) {
         res.json(row);
       });
