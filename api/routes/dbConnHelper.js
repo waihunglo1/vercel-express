@@ -13,7 +13,29 @@ async function getAivenPgVersion() {
 }
 
 async function queryDailyStockStats() {
-  const result = await sql`SELECT * FROM daily_stock_stats`;
+  const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
+
+  var stats = await sql`SELECT 
+    symbol, dt, sector, industry, sctr, close, 
+    0 as delta, sma10turnover, volume as vol 
+    FROM daily_stock_stats`;
+
+  const result = [txDate[0]]; 
+
+  stats.forEach(stat => {
+    result.push({
+      symbol: stat.symbol,
+      date: stat.date,
+      sector: stat.sector,
+      industry: stat.industry,
+      SCTR: stat.sctr,
+      close: stat.close,
+      delta: stat.delta,
+      sma10turnover: stat.sma10turnover,
+      vol: stat.vol
+    });
+  });
+
   return result;
 }
 
