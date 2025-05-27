@@ -16,7 +16,7 @@ async function queryDailyStockStats() {
   const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
 
   var stats = await sql`SELECT 
-    symbol, dt, sector, industry, sctr, close, 
+    symbol, short_name, dt, sector, industry, sctr, close, 
     0 as delta, sma10turnover, volume as vol 
     FROM daily_stock_stats`;
 
@@ -25,6 +25,7 @@ async function queryDailyStockStats() {
   stats.forEach(stat => {
     result.push({
       symbol: stat.symbol,
+      short_name: stat.name,
       date: stat.date,
       sector: stat.sector,
       industry: stat.industry,
