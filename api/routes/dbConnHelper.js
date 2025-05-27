@@ -12,6 +12,31 @@ async function getAivenPgVersion() {
   return version;
 }
 
+async function queryDailyStockStatsBySymbol(stock) {
+    const index = stock.symbol.search(/.HK$/);
+    if(index < 0) {
+        return;
+    }
+
+  var stats = await sql`SELECT 
+    symbol, short_name, dt, sector, industry, sctr, close, 
+    0 as delta, sma10turnover, volume as vol 
+    FROM daily_stock_stats WHERE symbol = ${stock.symbol}`;
+
+  stats.forEach(stat => {
+    // stock.symbol = stat.symbol;
+    stock.name = stat.short_name;
+    stock.date = stat.dt;
+    stock.sector = stat.sector;
+    stock.industry = stat.industry;
+    stock.sctr = stat.sctr;
+    // stock.close = stat.close;
+    stock.delta = stat.delta;
+    stock.sma10turnover = stat.sma10turnover;
+    // stock.vol = stat.vol;
+  });
+}
+
 async function queryDailyStockStats() {
   const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
 
@@ -42,5 +67,6 @@ async function queryDailyStockStats() {
 
 module.exports = {
     getAivenPgVersion,
-    queryDailyStockStats
+    queryDailyStockStats,
+    queryDailyStockStatsBySymbol
 };

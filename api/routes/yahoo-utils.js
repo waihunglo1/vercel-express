@@ -4,6 +4,7 @@ const helper = require('./helper.js');
 const stockcharts = require('./stockcharts-utils.js')
 const config = require('./config.js');
 const axios = require('axios').default;
+const dbHelper = require('./dbConnHelper.js');
 
 // cookie
 const path = require('path');
@@ -74,6 +75,9 @@ const queryHistoryPrices = async (startDateStr, stock, taIndicatorStr) => {
 
     // fill exchange
     await queryStockQuote(stock);
+
+    // fill daily stock stats
+    await dbHelper.queryDailyStockStatsBySymbol(stock);
   } catch (error) {
     console.warn(`Skipping queryHistoryPrices("${stock.symbol}"): [${error.name}] ${error.message}`);
     console.warn(error.stack);
