@@ -25,7 +25,7 @@ async function queryDailyStockStats() {
   stats.forEach(stat => {
     result.push({
       symbol: stat.symbol,
-      short_name: stat.name,
+      name: stat.short_name,
       date: stat.date,
       sector: stat.sector,
       industry: stat.industry,
