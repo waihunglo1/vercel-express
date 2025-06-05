@@ -43,7 +43,10 @@ async function queryDailyStockStats() {
   var stats = await sql`SELECT 
     symbol, short_name, dt, sector, industry, sctr, close, 
     0 as delta, sma10turnover, volume as vol 
-    FROM daily_stock_stats`;
+    FROM daily_stock_stats
+    WHERE sctr >= (select sctr from daily_stock_stats where symbol = '2800.HK')
+    and sma10turnover >= 2000000
+    `;
 
   const result = [txDate[0]]; 
 
