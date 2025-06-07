@@ -92,8 +92,41 @@ async function queryDailyStockStats() {
   return result;
 }
 
+async function queryDailyMarketStats() {
+  var stats = await sql`
+    SELECT 
+    * from 
+    DAILY_MARKET_STATS
+    order by dt desc
+    `;
+
+  const result = [];
+  stats.forEach(stat => {
+    result.push({
+      date: stat.dt,
+      up4pct1d: stat.up4pct1d,
+      dn4pct1d: stat.dn4pct1d,
+      up25pctin100d: stat.up25pctin100d,
+      dn25pctin100d: stat.dn25pctin100d,
+      up25pctin20d: stat.up25pctin20d,
+      dn25pctin20d: stat.dn25pctin20d,
+      up50pctin20d: stat.up50pctin20d,
+      dn50pctin20d: stat.dn50pctin20d,
+      noofstocks: stat.noofstocks,
+      above200smapct: stat.above200smapct,
+      above150smapct: stat.above150smapct,
+      above20smapct: stat.above20smapct,
+      hsi: stat.hsi,
+      hsce: stat.hsce
+    });
+  });
+
+  return result;
+}
+
 module.exports = {
     getAivenPgVersion,
     queryDailyStockStats,
-    queryDailyStockStatsBySymbol
+    queryDailyStockStatsBySymbol,
+    queryDailyMarketStats
 };

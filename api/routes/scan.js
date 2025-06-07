@@ -50,4 +50,14 @@ router.get('/sctr/hk', function (req, res, next) {
   }   
 });
 
+/**
+ * sctr function
+ */
+router.get('/mm/hk', function (req, res, next) {
+  dbHelper.queryDailyMarketStats()
+    .then(function (row) {
+      res.json(row);
+    });
+});
+
 module.exports = router;
