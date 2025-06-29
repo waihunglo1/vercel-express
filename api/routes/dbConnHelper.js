@@ -153,6 +153,22 @@ async function queryPortfolioData() {
 }
 
 async function storePortfolioData(portfolioData) {
+  const existingData = await sql`
+    SELECT count(1) FROM PORTFOLIO_DATA
+    WHERE symbols = ${portfolioData.symbols}
+  `;
+
+  if (existingData[0].count > 0) {
+    // If data exists, update it
+    const result = await sql`
+      UPDATE PORTFOLIO_DATA
+      SET remark = ${portfolioData.remark}
+      WHERE symbols = ${portfolioData.symbols}
+      RETURNING *
+    `;
+    return result[0];
+  }
+
   const result = await sql`
     INSERT INTO PORTFOLIO_DATA (symbols, remark)
     VALUES (${portfolioData.symbols}, ${portfolioData.remark})
