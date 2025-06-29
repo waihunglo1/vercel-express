@@ -145,7 +145,8 @@ async function queryPortfolioData() {
     result.push({
       date: stat.dt,
       symbols: stat.symbols,
-      remark: stat.remark
+      remark: stat.remark,
+      chartType: stat.chart_type
     });
   });
 
