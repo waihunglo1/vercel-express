@@ -143,6 +143,7 @@ async function queryPortfolioData() {
   const result = [];
   ppList.forEach(stat => {
     result.push({
+      id: stat.id,
       date: stat.dt,
       symbols: stat.symbols,
       remark: stat.remark,
