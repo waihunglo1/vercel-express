@@ -73,7 +73,7 @@ router.post('/pp/store', jsonParser, function (req, res, next) {
   const portfolioData = req.body;
   console.log('Received data:', portfolioData);
 
-  if( !portfolioData || !portfolioData.symbols || !portfolioData.remark) {
+  if( !portfolioData || !portfolioData.symbols || !portfolioData.remark || !portfolioData.chartType) {
     return res.status(400).json({ error: 'Invalid portfolio data' });
   } 
 

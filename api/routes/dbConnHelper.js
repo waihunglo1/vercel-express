@@ -170,8 +170,8 @@ async function storePortfolioData(portfolioData) {
   }
 
   const result = await sql`
-    INSERT INTO PORTFOLIO_DATA (symbols, remark)
-    VALUES (${portfolioData.symbols}, ${portfolioData.remark})
+    INSERT INTO PORTFOLIO_DATA (symbols, remark, chart_type)
+    VALUES (${portfolioData.symbols}, ${portfolioData.remark}, ${portfolioData.chartType})
     RETURNING *
   `;
   return result[0];
