@@ -10,10 +10,9 @@ const cors = require('cors');
 
 // Importing routes
 const healthCheckRouter = require('./routes/healthcheck');
-const proxyStockCharts = require('./routes/proxyStockCharts');
 const yahooRouter = require('./routes/yahoo');
 const dataScanRouter = require('./routes/scan');
-const proxyWhaleWisdom = require('./routes/proxyWhaleWisdom');
+const orginRedirector = require('./routes/originRedirector');
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -120,8 +119,9 @@ app.get('/allUsers', async (req, res) => {
 app.use('/api/v1/hc', healthCheckRouter);
 
 // Proxy route for /stockcharts
-app.use('/api/v1/stockcharts', proxyStockCharts);
-app.use('/api/v1/whalewisdom', proxyWhaleWisdom);
+app.use('/api/v1/stockcharts', orginRedirector.stockchartsProxy);
+app.use('/api/v1/whalewisdom', orginRedirector.proxyWhaleWisdomProxy);
+app.use('/api/v1/fintelio', orginRedirector.proxyFintelIoProxy);
 
 // Yahoo finance route
 app.use('/api/v1/yahoo', yahooRouter);

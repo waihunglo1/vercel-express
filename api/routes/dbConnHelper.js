@@ -92,6 +92,10 @@ async function queryDailyStockStats() {
   return result;
 }
 
+/**
+ * Query daily market statistics
+ * @returns 
+ */
 async function queryDailyMarketStats() {
   var stats = await sql`
     SELECT 
@@ -124,9 +128,54 @@ async function queryDailyMarketStats() {
   return result;
 }
 
+/**
+ * Query portfolio data
+ * @returns 
+ */
+async function queryPortfolioData() {
+  var ppList = await sql`
+    SELECT 
+    * from 
+    PORTFOLIO_DATA
+    order by dt desc
+    `;
+
+  const result = [];
+  ppList.forEach(stat => {
+    result.push({
+      date: stat.dt,
+      symbols: stat.symbols,
+      remark: stat.remark
+    });
+  });
+
+  return result;
+}
+
+async function storePortfolioData(portfolioData) {
+  const result = await sql`
+    INSERT INTO PORTFOLIO_DATA (symbols, remark)
+    VALUES (${portfolioData.symbols}, ${portfolioData.remark})
+    RETURNING *
+  `;
+  return result[0];
+} 
+
+async function deletePortfolioData(portfolioId) {
+  const result = await sql`
+    DELETE FROM PORTFOLIO_DATA
+    WHERE id = ${portfolioId}
+    RETURNING *
+  `;
+  return result[0];
+} 
+
 module.exports = {
     getAivenPgVersion,
     queryDailyStockStats,
     queryDailyStockStatsBySymbol,
-    queryDailyMarketStats
+    queryDailyMarketStats,
+    queryPortfolioData,
+    storePortfolioData,
+    deletePortfolioData
 };
