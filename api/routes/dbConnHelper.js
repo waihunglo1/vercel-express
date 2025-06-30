@@ -37,20 +37,37 @@ async function queryDailyStockStatsBySymbol(stock) {
   });
 }
 
-async function queryDailyStockStats() {
+async function queryDailyStockStats(view) {
   const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
+  var stats = null;
 
-  var stats = await sql`SELECT 
-    symbol, short_name, dt, sector, industry, 
-    sctr1, sctr2, sctr3, sctr4, sctr5, 
-    sctr6, sctr7, sctr8, sctr9, sctr10,
-    sctr11, sctr12, sctr13, sctr14, sctr15,
-    sctr16, sctr17, sctr18, sctr19, sctr20,
-    close, sctr1 - sctr2 as delta, sma10turnover, volume as vol 
-    FROM daily_stock_stats
-    WHERE sctr1 >= (select sctr1 from daily_stock_stats where symbol = '2800.HK')
-    and sma10turnover >= 20000000
-    `;
+  if(helper.isEmpty(view) || view == 'default') {
+    stats = await sql`SELECT 
+        symbol, short_name, dt, sector, industry, 
+        sctr1, sctr2, sctr3, sctr4, sctr5, 
+        sctr6, sctr7, sctr8, sctr9, sctr10,
+        sctr11, sctr12, sctr13, sctr14, sctr15,
+        sctr16, sctr17, sctr18, sctr19, sctr20,
+        close, sctr1 - sctr2 as delta, sma10turnover, volume as vol 
+        FROM daily_stock_stats
+        WHERE sctr1 >= (select sctr1 from daily_stock_stats where symbol = '2800.HK')
+        and sma10turnover >= 20000000
+        `;
+  } else if (view == 'sma') {
+    stats = await sql`SELECT
+        symbol, short_name, dt, sector, industry,
+        sctr1, sctr2, sctr3, sctr4, sctr5,
+        sctr6, sctr7, sctr8, sctr9, sctr10,
+        sctr11, sctr12, sctr13, sctr14, sctr15,
+        sctr16, sctr17, sctr18, sctr19, sctr20,
+        close, sctr1 - sctr2 as delta, sma10turnover, volume as vol
+        FROM daily_stock_stats
+        WHERE sma10turnover >= 20000000
+        and above_20d_sma > 0 
+        and above_50d_sma > 0 
+        and above_150d_sma > 0
+        `;
+  }
 
   const result = [txDate[0]]; 
 

@@ -49,7 +49,7 @@ router.get('/sctr/us', function (req, res, next) {
 router.get('/sctr/hk', function (req, res, next) {
   const view = req.query.view;
   if (!helper.isEmpty(view)) {
-    dbHelper.queryDailyStockStats()
+    dbHelper.queryDailyStockStats(view)
       .then(function (row) {
         res.json(row);
       });
