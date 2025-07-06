@@ -68,6 +68,20 @@ async function queryDailyStockStats(view) {
         and above_50d_sma > 0 
         and above_150d_sma > 0
         `;
+  } else if (view == 'vol') {
+    stats = await sql`SELECT
+        symbol, short_name, dt, sector, industry,
+        sctr1, sctr2, sctr3, sctr4, sctr5,
+        sctr6, sctr7, sctr8, sctr9, sctr10,
+        sctr11, sctr12, sctr13, sctr14, sctr15,
+        sctr16, sctr17, sctr18, sctr19, sctr20,
+        close, sctr1 - sctr2 as delta, sma10turnover, volume as vol
+        FROM daily_stock_stats
+        WHERE volume * close > sma10turnover 
+        and sma10turnover > 0 
+        and volume * close / sma10turnover > 2
+        and sma10turnover >= 10000000
+        `;
   }
 
   const result = [txDate[0]]; 
