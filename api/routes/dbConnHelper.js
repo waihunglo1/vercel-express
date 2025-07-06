@@ -80,7 +80,7 @@ async function queryDailyStockStats(view) {
         WHERE volume * close > sma10turnover 
         and sma10turnover > 0 
         and volume * close / sma10turnover > 2
-        and sma10turnover >= 10000000
+        and volume * close  >= 5000000
         `;
   }
 
