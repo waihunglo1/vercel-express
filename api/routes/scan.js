@@ -67,6 +67,16 @@ router.get('/mm/hk', function (req, res, next) {
 });
 
 /**
+ * sector breadth statistics function
+ */
+router.get('/sm/hk', function (req, res, next) {
+  dbHelper.queryDailySectorsStats()
+    .then(function (row) {
+      res.json(row);
+    });
+});
+
+/**
  * store portfolio function
  */
 router.post('/pp/store', jsonParser, function (req, res, next) {

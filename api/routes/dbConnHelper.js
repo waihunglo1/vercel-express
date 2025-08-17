@@ -161,6 +161,64 @@ async function queryDailyMarketStats() {
 }
 
 /**
+ * Query daily market statistics
+ * @returns 
+ */
+async function queryDailySectorsStats() {
+  var stats = await sql`
+    SELECT 
+    * from 
+    DAILY_SECTORS_STATS
+    order by dt desc
+    `;
+
+  const result = [];
+  stats.forEach(stat => {
+    result.push({
+      date: stat.dt,
+      XLB_U4SM: stat.XLB_U4SM,
+      XLB_D4SM: stat.XLB_D4SM,
+      XLB_SM: stat.XLB_SM,
+      XLC_U4SM: stat.XLC_U4SM, 
+      XLC_D4SM: stat.XLC_D4SM,
+      XLC_SM: stat.XLC_SM,
+      XLY_U4SM: stat.XLY_U4SM,
+      XLY_D4SM: stat.XLY_D4SM,
+      XLY_SM: stat.XLY_SM,
+      XLP_U4SM: stat.XLP_U4SM,
+      XLP_D4SM: stat.XLP_D4SM,
+      XLP_SM: stat.XLP_SM,
+      XLE_U4SM: stat.XLE_U4SM,
+      XLE_D4SM: stat.XLE_D4SM,
+      XLE_SM: stat.XLE_SM,
+      XLF_U4SM: stat.XLF_U4SM,
+      XLF_D4SM: stat.XLF_D4SM,
+      XLF_SM: stat.XLF_SM,
+      XLV_U4SM: stat.XLV_U4SM,
+      XLV_D4SM: stat.XLV_D4SM,
+      XLV_SM: stat.XLV_SM,
+      XLI_U4SM: stat.XLI_U4SM,
+      XLI_D4SM: stat.XLI_D4SM,
+      XLI_SM: stat.XLI_SM,
+      XLRE_U4SM: stat.XLRE_U4SM,
+      XLRE_D4SM: stat.XLRE_D4SM,  
+      XLRE_SM: stat.XLRE_SM,
+      XLK_U4SM: stat.XLK_U4SM,  
+      XLK_D4SM: stat.XLK_D4SM,
+      XLK_SM: stat.XLK_SM,
+      XLU_U4SM: stat.XLU_U4SM,  
+      XLU_D4SM: stat.XLU_D4SM,
+      XLU_SM: stat.XLU_SM,  
+      XLX_U4SM: stat.XLX_U4SM,
+      XLX_D4SM: stat.XLX_D4SM,  
+      XLX_SM: stat.XLX_SM
+    });
+  });
+
+  return result;
+}
+
+/**
  * Query portfolio data
  * @returns 
  */
@@ -227,5 +285,6 @@ module.exports = {
     queryDailyMarketStats,
     queryPortfolioData,
     storePortfolioData,
-    deletePortfolioData
+    deletePortfolioData,
+    queryDailySectorsStats
 };
