@@ -51,8 +51,8 @@ async function queryDailyStockStats(view) {
         sctr16, sctr17, sctr18, sctr19, sctr20,
         close, sctr1 - sctr2 as delta, sma10turnover, volume as vol,
         case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        vp_low - close * 0.05 vp_low, 
-        vp_high + close * 0.05 vp_high
+        (close - (vp_low - close * 0.05)) / close * 100 vp_low, 
+        ((vp_high + close * 0.05) - close) / close * 100 vp_high
         FROM daily_stock_stats
         WHERE sctr1 >= (select sctr1 from daily_stock_stats where symbol = '2800.HK')
         and sma10turnover >= 20000000
@@ -66,8 +66,8 @@ async function queryDailyStockStats(view) {
         sctr16, sctr17, sctr18, sctr19, sctr20,
         close, sctr1 - sctr2 as delta, sma10turnover, volume as vol,
         case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        vp_low - close * 0.05 vp_low, 
-        vp_high + close * 0.05 vp_high
+        (close - (vp_low - close * 0.05)) / close * 100 vp_low, 
+        ((vp_high + close * 0.05) - close) / close * 100 vp_high
         FROM daily_stock_stats
         WHERE sma10turnover >= 20000000
         and above_20d_sma > 0 
@@ -83,8 +83,8 @@ async function queryDailyStockStats(view) {
         sctr16, sctr17, sctr18, sctr19, sctr20,
         close, sctr1 - sctr2 as delta, sma10turnover, volume as vol,
         case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        vp_low - close * 0.05 vp_low, 
-        vp_high + close * 0.05 vp_high
+        (close - (vp_low - close * 0.05)) / close * 100 vp_low, 
+        ((vp_high + close * 0.05) - close) / close * 100 vp_high
         FROM daily_stock_stats
         WHERE volume * close > sma10turnover 
         and sma10turnover > 0 
