@@ -163,7 +163,7 @@ async function queryDailyMarketStats() {
       noofstocks: stat.noofstocks,
       above200smapct: stat.above200smapct,
       above150smapct: stat.above150smapct,
-      above150smapct: stat.above50smapct,
+      above50smapct: stat.above50smapct,
       above20smapct: stat.above20smapct,
       hsi: stat.hsi,
       hsce: stat.hsce
