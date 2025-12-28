@@ -73,6 +73,7 @@ async function queryDailyStockStats(view) {
         and above_20d_sma > 0 
         and above_50d_sma > 0 
         and above_150d_sma > 0
+        or symbol = '2800.HK'
         `;
   } else if (view == 'vol') {
     stats = await sql`SELECT
@@ -90,6 +91,7 @@ async function queryDailyStockStats(view) {
         and sma10turnover > 0 
         and volume * close / sma10turnover > 2
         and volume * close  >= 5000000
+        or symbol = '2800.HK'
         `;
   }
 
