@@ -90,7 +90,7 @@ async function queryDailyStockStats(view) {
         WHERE volume * close > sma10turnover 
         and sma10turnover > 0 
         and volume * close / sma10turnover > 2
-        and volume * close  >= 5000000
+        and volume * close  >= 10000000
         or symbol = '2800.HK'
         `;
   }
