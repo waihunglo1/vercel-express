@@ -1,10 +1,15 @@
 const taIndicator = require('@debut/indicators');
-const yahooFinance = require('yahoo-finance2').default;
 const helper = require('./helper.js');
 const stockcharts = require('./stockcharts-utils.js')
 const config = require('./config.js');
 const axios = require('axios').default;
 const dbHelper = require('./dbConnHelper.js');
+
+// yahoo finance api
+const YahooFinance = require('yahoo-finance2').default; // NOTE the .default
+const yahooFinance = new YahooFinance({
+ suppressNotices: ["yahooSurvey"] // optional
+});
 
 // cookie
 const path = require('path');
