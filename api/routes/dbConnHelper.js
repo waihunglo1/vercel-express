@@ -93,6 +93,26 @@ async function queryDailyStockStats(view) {
         and volume * close  >= 10000000
         or symbol = '2800.HK'
         `;
+  } else if (view == 'rsup') {
+    stats = await sql`SELECT
+        symbol, short_name, dt, sector, industry,
+        normalise_rs1, normalise_rs2, normalise_rs3, normalise_rs4, normalise_rs5, 
+        normalise_rs6, normalise_rs7, normalise_rs8, normalise_rs9, normalise_rs10,
+        normalise_rs11, normalise_rs12, normalise_rs13, normalise_rs14, normalise_rs15,
+        normalise_rs16, normalise_rs17, normalise_rs18, normalise_rs19, normalise_rs20,
+        close, normalise_rs1 - normalise_rs2 as delta, sma10turnover, volume as vol,
+        case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
+        (close - (vp_low - close * 0.05)) / close vp_low, 
+        ((vp_high + close * 0.05) - close) / close vp_high
+        FROM daily_stock_stats
+        WHERE volume * close > sma10turnover 
+        and sma10turnover > 0 
+        and normalise_rs2 != 0
+        and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0
+        or symbol = '2800.HK'
+        order by (normalise_rs1 - normalise_rs2) /  normalise_rs2 desc
+        limit 100
+        `;
   }
 
   const result = [txDate[0]]; 
