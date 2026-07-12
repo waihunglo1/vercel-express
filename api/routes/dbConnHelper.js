@@ -105,14 +105,17 @@ async function queryDailyStockStats(view) {
         (close - (vp_low - close * 0.05)) / close vp_low, 
         ((vp_high + close * 0.05) - close) / close vp_high
         FROM daily_stock_stats
-        WHERE volume * close > sma10turnover 
-        and sma10turnover > 0 
-        and normalise_rs2 != 0
-        and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0
+        WHERE 
+        (
+          volume * close > sma10turnover 
+          and sma10turnover > 0 
+          and normalise_rs2 != 0
+          and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0
+          and volume * close >= 10000000      
+        ) 
         or symbol = '2800.HK'
-        and volume * close >= 10000000        
         order by (normalise_rs1 - normalise_rs2) /  normalise_rs2 desc
-        limit 100
+        limit 200
         `;
   }
 
