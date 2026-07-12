@@ -110,6 +110,7 @@ async function queryDailyStockStats(view) {
         and normalise_rs2 != 0
         and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0
         or symbol = '2800.HK'
+        and volume * close >= 10000000        
         order by (normalise_rs1 - normalise_rs2) /  normalise_rs2 desc
         limit 100
         `;
