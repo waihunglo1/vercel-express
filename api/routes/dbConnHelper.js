@@ -42,8 +42,7 @@ async function queryDailyStockStats(view) {
   const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
   var stats = null;
 
-  if(helper.isEmpty(view) || view == 'default') {
-    stats = await sql`SELECT 
+  var selectQuery = `SELECT 
         symbol, short_name, dt, sector, industry, 
         normalise_rs1, normalise_rs2, normalise_rs3, normalise_rs4, normalise_rs5, 
         normalise_rs6, normalise_rs7, normalise_rs8, normalise_rs9, normalise_rs10,
@@ -54,75 +53,27 @@ async function queryDailyStockStats(view) {
         case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
         (close - (vp_low - close * 0.05)) / close vp_low, 
         ((vp_high + close * 0.05) - close) / close vp_high
-        FROM daily_stock_stats
-        WHERE normalise_rs1 >= (select normalise_rs1 from daily_stock_stats where symbol = '2800.HK')
-        and sma10turnover >= 20000000
-        `;
+        FROM daily_stock_stats`;
+
+  if(helper.isEmpty(view) || view == 'default') {
+    selectQuery += ` WHERE normalise_rs1 >= (select normalise_rs1 from daily_stock_stats where symbol = '2800.HK') 
+    and sma10turnover >= 20000000`;
   } else if (view == 'sma') {
-    stats = await sql`SELECT
-        symbol, short_name, dt, sector, industry,
-        normalise_rs1, normalise_rs2, normalise_rs3, normalise_rs4, normalise_rs5, 
-        normalise_rs6, normalise_rs7, normalise_rs8, normalise_rs9, normalise_rs10,
-        normalise_rs11, normalise_rs12, normalise_rs13, normalise_rs14, normalise_rs15,
-        normalise_rs16, normalise_rs17, normalise_rs18, normalise_rs19, normalise_rs20,
-        rs_priceOverSMA20, rs_slopeSMA20, rs_slopeSMA50, rs_slopeSMA150, 
-        close, normalise_rs1 - normalise_rs2 as delta, sma10turnover, volume as vol,
-        case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        (close - (vp_low - close * 0.05)) / close vp_low, 
-        ((vp_high + close * 0.05) - close) / close vp_high
-        FROM daily_stock_stats
-        WHERE sma10turnover >= 20000000
-        and above_20d_sma > 0 
-        and above_50d_sma > 0 
-        and above_150d_sma > 0
-        or symbol = '2800.HK'
-        `;
+    selectQuery += ` WHERE sma10turnover >= 20000000 and above_20d_sma > 0 
+    and above_50d_sma > 0 
+    and above_150d_sma > 0 
+    or symbol = '2800.HK'`;
   } else if (view == 'vol') {
-    stats = await sql`SELECT
-        symbol, short_name, dt, sector, industry,
-        normalise_rs1, normalise_rs2, normalise_rs3, normalise_rs4, normalise_rs5, 
-        normalise_rs6, normalise_rs7, normalise_rs8, normalise_rs9, normalise_rs10,
-        normalise_rs11, normalise_rs12, normalise_rs13, normalise_rs14, normalise_rs15,
-        normalise_rs16, normalise_rs17, normalise_rs18, normalise_rs19, normalise_rs20,
-        rs_priceOverSMA20, rs_slopeSMA20, rs_slopeSMA50, rs_slopeSMA150, 
-        close, normalise_rs1 - normalise_rs2 as delta, sma10turnover, volume as vol,
-        case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        (close - (vp_low - close * 0.05)) / close vp_low, 
-        ((vp_high + close * 0.05) - close) / close vp_high
-        FROM daily_stock_stats
-        WHERE volume * close > sma10turnover 
-        and sma10turnover > 0 
-        and volume * close / sma10turnover > 2
-        and volume * close  >= 10000000
-        or symbol = '2800.HK'
-        `;
+    selectQuery += ` WHERE volume * close > sma10turnover and sma10turnover > 0 
+    and volume * close / sma10turnover > 2 
+    and volume * close  >= 10000000 or symbol = '2800.HK'`;
   } else if (view == 'rsup') {
-    stats = await sql`SELECT
-        symbol, short_name, dt, sector, industry,
-        normalise_rs1, normalise_rs2, normalise_rs3, normalise_rs4, normalise_rs5, 
-        normalise_rs6, normalise_rs7, normalise_rs8, normalise_rs9, normalise_rs10,
-        normalise_rs11, normalise_rs12, normalise_rs13, normalise_rs14, normalise_rs15,
-        normalise_rs16, normalise_rs17, normalise_rs18, normalise_rs19, normalise_rs20,
-        rs_priceOverSMA20, rs_slopeSMA20, rs_slopeSMA50, rs_slopeSMA150, 
-        close, normalise_rs1 - normalise_rs2 as delta, sma10turnover, volume as vol,
-        case when close > vp_low - close * 0.05 and close < vp_high + close * 0.05 then 1 else 0 end as area_breakout, 
-        (close - (vp_low - close * 0.05)) / close vp_low, 
-        ((vp_high + close * 0.05) - close) / close vp_high
-        FROM daily_stock_stats
-        WHERE 
-        (
-          volume * close > sma10turnover 
-          and sma10turnover > 0 
-          and normalise_rs2 != 0
-          and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0
-          and volume * close >= 10000000      
-        ) 
-        or symbol = '2800.HK'
-        order by (normalise_rs1 - normalise_rs2) /  normalise_rs2 desc
-        limit 200
-        `;
+    selectQuery += ` WHERE volume * close > sma10turnover and sma10turnover > 0 and normalise_rs2 != 0 
+    and (normalise_rs1 - normalise_rs2) /  normalise_rs2 >= 0 
+    and volume * close >= 10000000 or symbol = '2800.HK'`;
   }
 
+  stats = await sql`${selectQuery}`;
   const result = [txDate[0]]; 
 
   stats.forEach(stat => {
