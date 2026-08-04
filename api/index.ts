@@ -3,10 +3,10 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const { sql } = require('@vercel/postgres');
-
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const storage = require('./storage.js');
 
 // Importing routes
 const healthCheckRouter = require('./routes/healthcheck');
@@ -16,6 +16,17 @@ const orginRedirector = require('./routes/originRedirector');
 
 // Create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+// Middleware setting up the execution context
+app.use((req, res, next) => {
+  const region = req.headers['x-region'] || 'hk';
+  const currentConfig = storage.dbConfigs[region];
+
+  // Wrap the rest of the request lifecycle inside the store
+  storage.local.run(currentConfig, () => {
+    next();
+  });
+});
 
 app.use(cors());
 app.use(express.static('public'));
