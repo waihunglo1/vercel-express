@@ -1,6 +1,10 @@
-<html>
+<html lang="en">
 
-
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Health check</title>
+</head>
 
 <body>
   <div>
@@ -13,61 +17,72 @@
     <a href="/api/v1/dscan/sm/hk">HK Sectors Breadth</a><br>
     <a href="/api/v1/dscan/pp/list">portfolio list</a><br>
 
-    <a href="/api/v1/yahoo/taIndicator?cgo=^IXIC,^GSPC,^DJI|S50DF&p=1&format=json&order=d">yahoo index-scan</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=^IXIC,^GSPC,^DJI|S50DF&amp;p=1&amp;format=json&amp;order=d">yahoo index-scan</a><br>
     <a href="/api/v1/yahoo/taIndicator?cgo=0001.HK,0002.HK,0003.HK|B14">yahoo hk-scan</a><br>
-    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|B14&p=1&format=json&order=d">yahoo ROC</a><br>
-    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|M12&p=1&format=json&order=d">yahoo RIS</a><br>
-    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|S50DF&p=1&format=json&order=d">yahoo SMA50 Diff</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|B14&amp;p=1&amp;format=json&amp;order=d">yahoo ROC</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|M12&amp;p=1&amp;format=json&amp;order=d">yahoo RIS</a><br>
+    <a href="/api/v1/yahoo/taIndicator?cgo=SPY,MSFT,CPNG,TECK,VST,NTRA,NVDA,COHR,GE,WWD,STX,ANET,FLEX,ZI,NWSA,DFS,VRT,KMI,FCX,KBR,MRVL,WAB,LLY,PANW,CCJ|S50DF&amp;p=1&amp;format=json&amp;order=d">yahoo SMA50 Diff</a><br>
 
     <a href="/api/v1/yahoo/summary?cgo=^IXIC,AAPL,CRM,CTA,MSFT,CPNG,TECK">YF-SUMMARY</a><br>
 
     <a href="/api/v1/dscan?cgo=$NAA20R,$NAA50R,$NAA150R,$NAA200R">SC Market Breadth</a><br>
-    <a href="/api/v1/stockcharts/def/servlet/SC.uscan?cgo=SPY,MSFT,CPNG,TECK|B14&p=1&format=json&order=d">Stock charts proxy</a><br>
-    <a href="/api/v1/whalewisdom/portfolios/filer/holdings?id=alphabet-inc&q1=-1&type_filter=1,2,3,4&symbol=&change_filter=&minimum_ranking=&minimum_shares=&minimum_mv=&is_etf=0&sc=false&sort=current_mv&order=desc&offset=0&limit=100&exclude_subadvisor=false">13F portfolios proxy</a><br>
+    <a href="/api/v1/stockcharts/def/servlet/SC.uscan?cgo=SPY,MSFT,CPNG,TECK|B14&amp;p=1&amp;format=json&amp;order=d">Stock charts proxy</a><br>
+    <a
+      href="/api/v1/whalewisdom/portfolios/filer/holdings?id=alphabet-inc&amp;q1=-1&amp;type_filter=1,2,3,4&amp;symbol=&amp;change_filter=&amp;minimum_ranking=&amp;minimum_shares=&amp;minimum_mv=&amp;is_etf=0&amp;sc=false&amp;sort=current_mv&amp;order=desc&amp;offset=0&amp;limit=100&amp;exclude_subadvisor=false">13F
+      portfolios proxy</a><br>
     <a href="/api/v1/fintelio/portfolios/api/i/alloc/two-sigma-investments-llc">fintel.io 13F portfolios proxy</a><br>
 
 
-    <script>
-      document.getElementById('x-region-header-hk').addEventListener('click', function (event) {
-        event.preventDefault(); // Stop the browser from navigating instantly
 
-        const targetUrl = this.href;
 
-        // Send the request with custom headers
-        fetch(targetUrl, {
-          method: 'GET',
-          headers: {
-            'x-region': 'hk'
-          }
+
+  </div>
+
+
+  <script>
+    document.getElementById('x-region-header-hk').addEventListener('click', function (event) {
+      event.preventDefault(); // Stop the browser from navigating instantly
+
+      const targetUrl = this.href;
+
+      // Send the request with custom headers
+      fetch(targetUrl, {
+        method: 'GET',
+        headers: {
+          'x-region': 'hk'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // Handle your page navigation or state update here
         })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-            // Handle your page navigation or state update here
-          })
-          .catch(error => console.error('Error:', error));
-      });
+        .catch(error => console.error('Error:', error));
+    });
 
-      document.getElementById('x-region-header-us').addEventListener('click', function (event) {
-        event.preventDefault(); // Stop the browser from navigating instantly
+    document.getElementById('x-region-header-us').addEventListener('click', function (event) {
+      event.preventDefault(); // Stop the browser from navigating instantly
 
-        const targetUrl = this.href;
+      const targetUrl = this.href;
 
-        // Send the request with custom headers
-        fetch(targetUrl, {
-          method: 'GET',
-          headers: {
-            'x-region': 'us'
-          }
+      // Send the request with custom headers
+      fetch(targetUrl, {
+        method: 'GET',
+        headers: {
+          'x-region': 'us'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // Handle your page navigation or state update here
         })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-            // Handle your page navigation or state update here
-          })
-          .catch(error => console.error('Error:', error));
-      });      
-    </script>
+        .catch(error => console.error('Error:', error));
+    });      
+  </script>
+
+
+
 </body>
 
 </html>
