@@ -5,12 +5,14 @@ var bodyParser = require('body-parser')
 const helper = require('./helper.js');
 const config = require('./config.js');
 const stockcharts = require('./stockcharts-utils.js')
+const storage = require('../storage.js');
 const dbHelper = require('./dbConnHelper.js');
 var router = express.Router();
 var jsonParser = bodyParser.json();
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 /**
  * main function
@@ -47,9 +49,14 @@ router.get('/sctr/us', function (req, res, next) {
  * sctr function
  */
 router.get('/sctr/hk', function (req, res, next) {
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
   const view = req.query.view;
   if (!helper.isEmpty(view)) {
-    dbHelper.queryDailyStockStats(view)
+    dbHelper.queryDailyStockStats(view, activeConfig)
       .then(function (row) {
         res.json(row);
       });
@@ -60,7 +67,12 @@ router.get('/sctr/hk', function (req, res, next) {
  * market breadth statistics function
  */
 router.get('/mm/hk', function (req, res, next) {
-  dbHelper.queryDailyMarketStats()
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
+  dbHelper.queryDailyMarketStats(activeConfig)
     .then(function (row) {
       res.json(row);
     });
@@ -70,7 +82,12 @@ router.get('/mm/hk', function (req, res, next) {
  * sector breadth statistics function
  */
 router.get('/sm/hk', function (req, res, next) {
-  dbHelper.queryDailySectorsStats()
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
+  dbHelper.queryDailySectorsStats(activeConfig)
     .then(function (row) {
       res.json(row);
     });
@@ -80,6 +97,11 @@ router.get('/sm/hk', function (req, res, next) {
  * store portfolio function
  */
 router.post('/pp/store', jsonParser, function (req, res, next) {
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
   const portfolioData = req.body;
   console.log('Received data:', portfolioData);
 
@@ -87,7 +109,7 @@ router.post('/pp/store', jsonParser, function (req, res, next) {
     return res.status(400).json({ error: 'Invalid portfolio data' });
   } 
 
-  dbHelper.storePortfolioData(portfolioData)
+  dbHelper.storePortfolioData(portfolioData, activeConfig)
     .then(function (result) {
       res.json(result);
     });
@@ -97,7 +119,12 @@ router.post('/pp/store', jsonParser, function (req, res, next) {
  * list portfolio function
  */
 router.get('/pp/list', function (req, res, next) {
-  dbHelper.queryPortfolioData()
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
+  dbHelper.queryPortfolioData(activeConfig)
     .then(function (row) {
       res.json(row);
     });
@@ -107,13 +134,18 @@ router.get('/pp/list', function (req, res, next) {
  * delete portfolio function
  */
 router.delete('/pp/delete', function (req, res, next) {
+  const activeConfig = storage.local.getStore();
+  if (!activeConfig || !activeConfig.sql) {
+    return res.status(500).json({ error: "Database context not initialized" });
+  }
+
   const portfolioId = req.query.id;
 
   if (!portfolioId) {
     return res.status(400).json({ error: 'Portfolio ID is required' });
   }
 
-  dbHelper.deletePortfolioData(portfolioId)
+  dbHelper.deletePortfolioData(portfolioId, activeConfig)
     .then(function (result) {
       res.json(result);
     });

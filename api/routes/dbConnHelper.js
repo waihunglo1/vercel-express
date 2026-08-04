@@ -7,11 +7,12 @@ async function getAivenPgVersion(activeConfig) {
   return version
 }
 
-async function queryDailyStockStatsBySymbol(stock) {
-    const index = stock.symbol.search(/.HK$/);
-    if(index < 0) {
-        return;
-    }
+async function queryDailyStockStatsBySymbol(stock, activeConfig) {
+  const sql = activeConfig.sql;  
+  const index = stock.symbol.search(/.HK$/);
+  if(index < 0) {
+      return;
+  }
 
   var stats = await sql`SELECT 
     symbol, short_name, dt, sector, industry, sctr1, close, 
@@ -32,7 +33,8 @@ async function queryDailyStockStatsBySymbol(stock) {
   });
 }
 
-async function queryDailyStockStats(view) {
+async function queryDailyStockStats(view, activeConfig) {
+  const sql = activeConfig.sql;  
   const txDate = await sql`SELECT max(dt) as date FROM daily_stock_stats`;
   var stats = null;
 
@@ -168,7 +170,8 @@ async function queryDailyStockStats(view) {
  * Query daily market statistics
  * @returns 
  */
-async function queryDailyMarketStats() {
+async function queryDailyMarketStats(activeConfig) {
+  const sql = activeConfig.sql;    
   var stats = await sql`
     SELECT 
     * from 
@@ -205,7 +208,8 @@ async function queryDailyMarketStats() {
  * Query daily market statistics
  * @returns 
  */
-async function queryDailySectorsStats() {
+async function queryDailySectorsStats(activeConfig) {
+  const sql = activeConfig.sql;    
   var stats = await sql`
     SELECT 
     * from 
@@ -263,7 +267,8 @@ async function queryDailySectorsStats() {
  * Query portfolio data
  * @returns 
  */
-async function queryPortfolioData() {
+async function queryPortfolioData(activeConfig) {
+  const sql = activeConfig.sql;
   var ppList = await sql`
     SELECT 
     * from 
@@ -285,7 +290,8 @@ async function queryPortfolioData() {
   return result;
 }
 
-async function storePortfolioData(portfolioData) {
+async function storePortfolioData(portfolioData, activeConfig) {
+  const sql = activeConfig.sql;
   const existingData = await sql`
     SELECT count(1) FROM PORTFOLIO_DATA
     WHERE symbols = ${portfolioData.symbols}
@@ -310,7 +316,8 @@ async function storePortfolioData(portfolioData) {
   return result[0];
 } 
 
-async function deletePortfolioData(portfolioId) {
+async function deletePortfolioData(portfolioId, activeConfig) {
+  const sql = activeConfig.sql;
   const result = await sql`
     DELETE FROM PORTFOLIO_DATA
     WHERE id = ${portfolioId}

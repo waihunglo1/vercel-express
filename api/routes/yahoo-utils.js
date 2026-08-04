@@ -23,7 +23,7 @@ const CookieFileStore = require('tough-cookie-file-store').FileCookieStore
  * @param {*} stockCodes 
  * @returns 
  */
-const queryMultipleStockTechIndicator = async (stockCodes, taIndicatorStr) => {
+const queryMultipleStockTechIndicator = async (stockCodes, taIndicatorStr, activeConfig) => {
   var bars = [];
   var stockList = [];
   var {startDate, endDate} = helper.determineTargetDateString(taIndicatorStr);
@@ -37,7 +37,7 @@ const queryMultipleStockTechIndicator = async (stockCodes, taIndicatorStr) => {
         "extra": -1,
         "errmsg":""
       }
-      queryHistoryPrices(startDate, stock, taIndicatorStr)
+      queryHistoryPrices(startDate, stock, taIndicatorStr, activeConfig)
         .then(function () {
           stockList.push(stock);
           resolve(stock);
@@ -66,7 +66,7 @@ const queryMultipleStockTechIndicator = async (stockCodes, taIndicatorStr) => {
  * @param {*} stockCodeStr 
  * @returns 
  */
-const queryHistoryPrices = async (startDateStr, stock, taIndicatorStr) => {
+const queryHistoryPrices = async (startDateStr, stock, taIndicatorStr, activeConfig) => {
   try {
     // format query options
     const queryOptions = { period1: startDateStr, /* ... */ };
@@ -82,7 +82,7 @@ const queryHistoryPrices = async (startDateStr, stock, taIndicatorStr) => {
     await queryStockQuote(stock);
 
     // fill daily stock stats
-    await dbHelper.queryDailyStockStatsBySymbol(stock);
+    await dbHelper.queryDailyStockStatsBySymbol(stock, activeConfig);
   } catch (error) {
     console.warn(`Skipping queryHistoryPrices("${stock.symbol}"): [${error.name}] ${error.message}`);
     console.warn(error.stack);
