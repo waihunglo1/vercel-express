@@ -12,26 +12,27 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@debut/indicators": "^1.3.22",
-    "@neondatabase/serverless": "^1.0.0",
-    "@vercel/postgres": "^0.7.2",
-    "axios": "^1.9.0",
+    "@debut/indicators": "^2.0.1",
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/postgres": "^0.10.0",
+    "axios": "^1.20.0",
     "axios-debug-log": "^1.0.0",
-    "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.1",
-    "express": "^5.1.0",
+    "body-parser": "^2.4.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
     "fincal": "^1.0.6",
     "isin-validator": "^1.1.1",
-    "js-yaml": "^4.1.0",
-    "moment": "^2.30.1",
-    "pg": "^8.16.0",
-    "postgrejs": "^2.22.4",
-    "postgres": "^3.4.7",
+    "js-yaml": "^5.5.0",
+    "moment": "^2.31.0",
+    "npm": "^12.2.1",
+    "pg": "^8.23.1",
+    "postgrejs": "^3.14.0",
+    "postgres": "^3.4.9",
     "xlsx": "^0.18.5",
-    "yahoo-finance2": "^3.13.2"
+    "yahoo-finance2": "^4.0.5"
   },
   "devDependencies": {
-    "http-proxy-middleware": "^3.0.5"
+    "http-proxy-middleware": "^4.2.1"
   }
 }
