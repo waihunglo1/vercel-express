@@ -44,11 +44,7 @@ const stockChartsOptions = {
 };
 
 const stockchartsProxy = createProxyMiddleware(stockChartsOptions);
-const proxyWhaleWisdomProxy = createProxyMiddleware(whaleWisdomOptions);
-const proxyFintelIoProxy = createProxyMiddleware(fintelIoOptions);
 
 module.exports = {
-    proxyWhaleWisdomProxy,
-    proxyFintelIoProxy,
     stockchartsProxy
 };

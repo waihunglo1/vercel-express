@@ -131,8 +131,6 @@ app.use('/api/v1/hc', healthCheckRouter);
 
 // Proxy route for /stockcharts
 app.use('/api/v1/stockcharts', orginRedirector.stockchartsProxy);
-app.use('/api/v1/whalewisdom', orginRedirector.proxyWhaleWisdomProxy);
-app.use('/api/v1/fintelio', orginRedirector.proxyFintelIoProxy);
 
 // Yahoo finance route
 app.use('/api/v1/yahoo', yahooRouter);
