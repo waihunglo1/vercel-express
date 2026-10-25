@@ -4,6 +4,12 @@ const stockcharts = require('./stockcharts-utils.js')
 const config = require('./config.js');
 const axios = require('axios').default;
 const dbHelper = require('./dbConnHelper.js');
+// const SimpleFileStore = require('./simple-file-cookie-store');
+// const store = new SimpleFileStore('/tmp/cookies.json'); // Note: Serverless environments should write to /tmp
+
+// Synchronous and native to tough-cookie
+// const store = new MemoryCookieStore();
+// const jar = new CookieJar(store);
 
 // yahoo finance api
 const YahooFinance = require('yahoo-finance2').default; // NOTE the .default
@@ -14,8 +20,8 @@ const yahooFinance = new YahooFinance({
 // cookie
 const path = require('path');
 const os = require('os');
-const ExtendedCookieJar = require('yahoo-finance2').ExtendedCookieJar;
-const CookieFileStore = require('tough-cookie-file-store').FileCookieStore
+// const ExtendedCookieJar = require('yahoo-finance2').ExtendedCookieJar;
+// const CookieFileStore = require('tough-cookie-file-store').FileCookieStore
 
 /**
  * 
